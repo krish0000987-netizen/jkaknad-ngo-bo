@@ -34,26 +34,36 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 3. MOBILE DRAWER NAVIGATION
-  const mobileToggle = document.querySelector('.mobile-toggle');
+  const mobileToggles = document.querySelectorAll('.mobile-toggle');
   const mobileDrawer = document.querySelector('.mobile-drawer');
   const drawerOverlay = document.querySelector('.mobile-drawer-overlay');
   const drawerClose = document.querySelector('.drawer-close');
 
-  const openDrawer = () => {
+  const openDrawer = (e) => {
+    if (e) e.preventDefault();
     if (mobileDrawer) mobileDrawer.classList.add('open');
     if (drawerOverlay) drawerOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
   };
 
-  const closeDrawer = () => {
+  const closeDrawer = (e) => {
+    if (e) e.preventDefault();
     if (mobileDrawer) mobileDrawer.classList.remove('open');
     if (drawerOverlay) drawerOverlay.classList.remove('open');
     document.body.style.overflow = '';
   };
 
-  if (mobileToggle) mobileToggle.addEventListener('click', openDrawer);
+  mobileToggles.forEach(btn => btn.addEventListener('click', openDrawer));
   if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
   if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
+
+  if (mobileDrawer) {
+    mobileDrawer.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        closeDrawer();
+      });
+    });
+  }
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeDrawer();
